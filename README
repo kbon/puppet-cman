@@ -1,0 +1,19 @@
+Configuration module for CMAN, the RHEL cluster manager
+
+Example usage:
+  cman_cluster { 'cl_CMP':
+                        ensure   => 'present',
+                        multicast => '10.1.1.1',
+                        altmulticast => '10.1.1.2',
+  }
+
+  cman_clusternode { '192.168.2.21':
+                        ensure   => 'present',
+                        require  => Cman_cluster['cl_CMP'],
+  }
+
+  class { 'cman::service':
+                        ensure   => 'running',
+                        enable   => true,
+                        require  => Cman_clusternode['192.168.2.21'],
+  }

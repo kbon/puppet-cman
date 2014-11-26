@@ -1,24 +1,24 @@
-# CMAN_CLUSTER_TIMEOUT -- amount of time to wait for joinging a cluster
+# CMAN_CLUSTER_TIMEOUT -- amount of time to wait to join a cluster
 #     before giving up.  If CMAN_CLUSTER_TIMEOUT is positive, then we will
-#     wait CMAN_CLUSTER_TIMEOUT seconds before giving up and failing when
-#     a cluster is not joined.  If CMAN_CLUSTER_TIMEOUT is zero, then
-#     wait indefinately for a cluster join.  If CMAN_CLUSTER_TIMEOUT is
-#     negative, do not check to see that the cluster has been joined
+#     wait CMAN_CLUSTER_TIMEOUT seconds before giving up and failing if
+#     we can't join a cluster.  If CMAN_CLUSTER_TIMEOUT is zero, then we
+#     will wait indefinitely for a cluster join.  If CMAN_CLUSTER_TIMEOUT is
+#     negative, do not check to see if we have joined a cluster.
 #CMAN_CLUSTER_TIMEOUT=60
 
 # CMAN_QUORUM_TIMEOUT -- amount of time to wait for a quorate cluster on
-#     startup quorum is needed by many other applications, so we may as
+#     startup. Quorum is needed by many other applications, so we may as
 #     well wait here.  If CMAN_QUORUM_TIMEOUT is zero, quorum will
 #     be ignored.
 #CMAN_QUORUM_TIMEOUT=45
 CMAN_QUORUM_TIMEOUT=0
 
 # CMAN_SHUTDOWN_TIMEOUT -- amount of time to wait for cman to become a
-#     cluster member before calling cman_tool leave during shutdown.
+#     cluster member before calling 'cman_tool' leave during shutdown.
 #     The default is 60 seconds
 #CMAN_SHUTDOWN_TIMEOUT=60
 
-# CMAN_NOTIFYD_START - control the startup behaviour for cmannotifyd
+# CMAN_NOTIFYD_START - control the startup behaviour for cmannotifyd,
 # the variable can take 3 values:
 # yes                   | will always start cmannotifyd
 # no                    | will never start cmannotifyd
@@ -26,11 +26,21 @@ CMAN_QUORUM_TIMEOUT=0
 #                         are found in /etc/cluster/cman-notify.d
 #CMAN_NOTIFYD_START=conditional
 
-# CMAN_SSHD_START - control sshd startup behaviour
+# CMAN_SSHD_START -- control sshd startup behaviour,
 # the variable can take 2 values:
 # yes                   | cman will start sshd as early as possible
 # no (default)          | cman will not start sshd
 #CMAN_SSHD_START=no
+
+# DLM_CONTROLD_OPTS -- allow extra options to be passed to dlm_controld daemon.
+#DLM_CONTROLD_OPTS=""
+
+# Allow tuning of DLM kernel config.
+# do NOT change unless instructed to do so.
+#DLM_LKBTBL_SIZE=""
+#DLM_RSBTBL_SIZE=""
+#DLM_DIRTBL_SIZE=""
+#DLM_TCP_PORT=""
 
 # FENCE_JOIN_TIMEOUT -- seconds to wait for fence domain join to
 #     complete.  If the join hasn't completed in this time, fence_tool join
@@ -48,6 +58,10 @@ CMAN_QUORUM_TIMEOUT=0
 #     set to "yes", then the script will attempt to join the fence domain.
 #     If FENCE_JOIN is set to any other value, the default behavior is
 #     to join the fence domain (equivalent to "yes").
+#     When setting FENCE_JOIN to "no", it is important to also set
+#     DLM_CONTROLD_OPTS="-f0" (at least) for correct operation.
+#     Please note that clusters without fencing are not 
+#     supported by Red Hat except for MRG installations.
 #FENCE_JOIN="yes"
 
 # FENCED_OPTS -- allow extra options to be passed to fence daemon.
@@ -61,7 +75,7 @@ CMAN_QUORUM_TIMEOUT=0
 # CLUSTERNAME -- override clustername as specified in cluster.conf
 #CLUSTERNAME=""
 
-# NODENAME -- specify the nodename of this node. Default autodetected
+# NODENAME -- specify the nodename of this node. Default autodetected.
 #NODENAME=""
 
 # CONFIG_LOADER -- select default config parser.
@@ -70,21 +84,21 @@ CMAN_QUORUM_TIMEOUT=0
 #                   config propagation method. (default)
 #CONFIG_LOADER=xmlconfig
 
-# CONFIG_VALIDATION -- select default config validation behaviour
+# CONFIG_VALIDATION -- select default config validation behaviour.
 # This can be:
 # FAIL - Use a very strict checking. The config will not be loaded if there
-#        for any kind of warnings/errors.
-# WARN - Same as FAIL, but will allow the config to load (this is temporary
+#        are any kind of warnings/errors
+# WARN - Same as FAIL, but will allow the config to load (this is temporarily
 #        the default behaviour)
-# NONE - Disable config validation. Highly discouraged.
+# NONE - Disable config validation. Highly discouraged
 #CONFIG_VALIDATION=WARN
 
 # CMAN_LEAVE_OPTS -- allows extra options to be passed to cman_tool when leave
 #     operation is performed.
 #CMAN_LEAVE_OPTS=""
 
-# INITLOGLEVEL -- select how verbose the init script should be
-# possible values:
+# INITLOGLEVEL -- select how verbose the init script should be.
+# Possible values:
 # quiet           - only one line notification for start/stop operations
 # terse (default) - show only required activity
 # full            - show everything

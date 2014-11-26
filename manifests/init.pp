@@ -1,4 +1,5 @@
 class cman {
+
   anchor {
     'cman::begin':
       require => [ Package['cman', 'ccs'], File['/etc/sysconfig/cman'] ],

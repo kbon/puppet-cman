@@ -2,6 +2,7 @@ class cman::service(
   $ensure='running',
   $enable=true
 ) {
+  include cman
 
   service {
     'cman':
@@ -9,7 +10,7 @@ class cman::service(
       enable     => $enable,
       hasstatus  => true,
       hasrestart => true,
-      require    => Class['cman'],
+      require    => [ Anchor['cman::begin'] ];
   }
 
 }
